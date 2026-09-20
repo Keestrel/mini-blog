@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 
 
-
 class PostAddSchema(BaseModel):
     title: str = Field(max_length=30)
     content: str = Field(max_length=100)

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: messanger
+    ports:
+      - "5432:5432" # Проброс порта, чтобы ты мог подключиться к базе с компьютера (например, через DBeaver)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data #Хранилище данных, чтобы БД не стиралась при перезапуске
+
+  web:
+    build: .
+    container_name: my_blog
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg://postgres:admin@db:5432/messanger
+    depends_on:
+      - db # Запускать FastAPI только ПОСЛЕ старта контейнера с базой
+
+volumes:
+  postgres_data: # Объявление виртуального диска Docker

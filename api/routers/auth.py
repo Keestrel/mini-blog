@@ -63,7 +63,7 @@ async def register(data: UserAddSchema, session: SessionDep):
     return {"OK": True}
 
 
-#AUTHRIZATUON
+#AUTHORIZATION
 
 class UserLoginSchema(BaseModel):
     username: str
