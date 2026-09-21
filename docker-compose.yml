@@ -15,9 +15,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data #Хранилище данных, чтобы БД не стиралась при перезапуске
 
-  web:
+  backend:
     build: .
-    container_name: my_blog
+    container_name: backend
     restart: always
     ports:
       - "8000:8000"
@@ -25,6 +25,14 @@ services:
       - DATABASE_URL=postgresql+psycopg://postgres:admin@db:5432/messanger
     depends_on:
       - db # Запускать FastAPI только ПОСЛЕ старта контейнера с базой
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend # Точное имя сервиса бэкенда из блока выше
 
 volumes:
   postgres_data: # Объявление виртуального диска Docker

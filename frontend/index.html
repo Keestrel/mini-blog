@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Приложение</title>
+</head>
+<body>
+    <h1>Проверка связи с бэкендом</h1>
+    <button id="check-btn">Проверить статус API</button>
+    <p id="status-output">Статус: ожидает нажатия...</p>
+
+    <script>
+        document.getElementById('check-btn').addEventListener('click', async () => {
+            const output = document.getElementById('status-output');
+            try {
+                // Запрос к FastAPI бэкенду
+                const response = await fetch('http://localhost:8000/docs');
+                if (response.ok) {
+                    output.textContent = 'Статус: Бэкенд успешно отвечает!';
+                    output.style.color = 'green';
+                } else {
+                    output.textContent = `Статус ошибки: ${response.status}`;
+                    output.style.color = 'red';
+                }
+            } catch (err) {
+                output.textContent = 'Статус: Ошибка подключения к бэкенду';
+                output.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
