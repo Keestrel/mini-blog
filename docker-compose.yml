@@ -11,12 +11,12 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: messanger
     ports:
-      - "5432:5432" # Проброс порта, чтобы ты мог подключиться к базе с компьютера (например, через DBeaver)
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data #Хранилище данных, чтобы БД не стиралась при перезапуске
 
   backend:
-    build: .
+    build: ./backend
     container_name: backend
     restart: always
     ports:
@@ -25,6 +25,9 @@ services:
       - DATABASE_URL=postgresql+psycopg://postgres:admin@db:5432/messanger
     depends_on:
       - db # Запускать FastAPI только ПОСЛЕ старта контейнера с базой
+    volumes:
+      - ./backend:/app
+
 
   frontend:
     build: ./frontend
