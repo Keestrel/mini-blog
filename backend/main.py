@@ -11,6 +11,9 @@ from core.database import init_db
 
 import models.user
 import models.post
+import models.chat_members
+import models.chat
+import models.message
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
