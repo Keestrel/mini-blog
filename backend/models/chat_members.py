@@ -19,5 +19,5 @@ class ChatMembersModel(Base):
     role: Mapped[str] = mapped_column(default="member")
     joined_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
-    chat: Mapped["ChatModel"] = relationship(back_populates="chat_members")
-    user: Mapped["UserModel"] = relationship(back_populates="members")
+    chat: Mapped["ChatModel"] = relationship(back_populates="members")
+    user: Mapped["UserModel"] = relationship(back_populates="chat_members")
