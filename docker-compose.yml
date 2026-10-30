@@ -8,8 +8,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: messanger
+      LC_MESSAGES: C
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data #Хранилище данных, чтобы БД не стиралась при перезапуске
 
@@ -20,11 +21,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql+psycopg://postgres:admin@db:5432/messanger
+      - DATABASE_URL=postgresql+psycopg://postgres:admin@postgres_db:5432/messanger
     depends_on:
       - db # Запускать FastAPI только ПОСЛЕ старта контейнера с базой
     volumes:
       - ./backend:/app
+    env_file:
+      - ./backend/.env
 
 
   frontend:
@@ -33,7 +36,7 @@ services:
     ports:
       - "3000:80"
     depends_on:
-      - backend # Точное имя сервиса бэкенда из блока выше
+      - backend
 
 volumes:
   postgres_data: # Объявление виртуального диска Docker

@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 from datetime import datetime
-from sqlalchemy import func
+from sqlalchemy import func, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from models.base import Base
 
@@ -14,6 +14,7 @@ class ChatModel(Base):
     type: Mapped[str] = mapped_column(default="direct")
     title: Mapped[str | None] = mapped_column(default=None)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    is_group: Mapped[bool] = mapped_column(Boolean, default=False)
 
     messages: Mapped[list["MessageModel"]] = relationship(
         back_populates="chat", cascade="all, delete-orphan"

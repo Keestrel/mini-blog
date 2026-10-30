@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.routers.auth import router as auth_router
 from api.routers.posts import router as posts_router
+from api.routers.chats import router as chats_router
+from api.routers.ws import router as ws_router
 
 from core.database import init_db
 
@@ -25,6 +27,8 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(auth_router)
 app.include_router(posts_router)
+app.include_router(chats_router)
+app.include_router(ws_router)
 
 app.add_middleware(
     CORSMiddleware,

@@ -5,6 +5,7 @@ from schemas.user_schema import UserAddSchema
 from models.user import UserModel
 from pydantic import BaseModel
 from core.config import security, config
+from core.security import get_password_hash, verify_password
 
 router = APIRouter(prefix="/auth", tags=["Пользователи"])
 
@@ -55,7 +56,7 @@ async def register(data: UserAddSchema, session: SessionDep):
     
     new_user = UserModel(
         username=data.username,
-        password=data.password,
+        password=get_password_hash(data.password),
         email=data.email
     )
     session.add(new_user)
@@ -75,7 +76,7 @@ async def login(credentials: UserLoginSchema, response: Response, session: Sessi
     result = await session.execute(query)
     user = result.scalar_one_or_none()
 
-    if not user or user.password != credentials.password:
+    if not user or not verify_password(credentials.password, user.password):
         raise HTTPException(status_code=401, detail="Неверное имя пользователя или пароль")
     
     token = security.create_access_token(uid=str(user.id))

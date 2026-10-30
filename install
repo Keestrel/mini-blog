@@ -1,2 +1,0 @@
-pip install "psycopg[binary]"
-docker compose up --build

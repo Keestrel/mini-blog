@@ -10,7 +10,6 @@ from sqlalchemy.orm import joinedload
 router = APIRouter(prefix="/posts", tags=["Публикации"])
 
 
-
 @router.post("", summary="Создание поста")
 async def create_post(
     data: PostAddSchema, 
