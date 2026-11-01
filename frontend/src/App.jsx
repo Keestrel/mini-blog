@@ -3,8 +3,8 @@ import {
   MessageSquare, Send, Plus, LogOut, Users, User, Wifi, WifiOff, FileText, Trash2
 } from 'lucide-react';
 
-const API_URL = 'http://localhost:8000';
-const WS_URL = 'ws://localhost:8000';
+const API_URL = 'http://192.168.1.182:8000';
+const WS_URL = 'ws://192.168.1.182:8000';
 
 function getUserIdFromToken(token) {
   if (!token) return null;
@@ -272,7 +272,7 @@ export default function App() {
         <div className="auth-card">
           <div className="auth-logo">
             <MessageSquare size={32} />
-            <h1>Свась</h1>
+            <h1>Pero</h1>
           </div>
           <div className="auth-tabs">
             <button className={isLoginMode ? 'active' : ''} onClick={() => { setIsLoginMode(true); setAuthError(''); }}>Вход</button>
@@ -304,7 +304,7 @@ export default function App() {
         <div className="sidebar-header">
           <div className="brand">
             <MessageSquare size={24} />
-            <span>Свась</span>
+            <span>Pero</span>
           </div>
         </div>
 
