@@ -8,6 +8,7 @@ from modules.auth.router import router as auth_router
 from modules.posts.router import router as posts_router
 from modules.chats.router import router as chats_router
 from modules.messages.router import router as messages_router
+from modules.users.router import router as users_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,6 +29,7 @@ app.include_router(auth_router)
 app.include_router(posts_router)
 app.include_router(chats_router)
 app.include_router(messages_router)
+app.include_router(users_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)

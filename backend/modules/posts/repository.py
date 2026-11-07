@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 from core.database import SessionDep
 from models.post import PostModel
 
@@ -12,8 +12,11 @@ class PostRepository:
         return post
 
     @staticmethod
-    async def get_all(session: SessionDep):
-        return (await session.execute(select(PostModel).options(joinedload(PostModel.author)))).scalars().all()
+    async def get_all(session: SessionDep, author_id: int | None = None):
+        query = select(PostModel).options(selectinload(PostModel.author)).order_by(PostModel.id.desc()) #Нетерпеливая загрзка
+        if author_id is not None:
+            query = query.where(PostModel.author_id == author_id)
+        return list((await session.execute(query)).scalars().all())
 
     @staticmethod
     async def get_by_id(session: SessionDep, post_id: int):

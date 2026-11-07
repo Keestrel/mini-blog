@@ -21,11 +21,3 @@ async def login(credentials: UserLoginSchema, response: Response, session: Sessi
     token = await AuthService.login(session, credentials.username, credentials.password)
     response.set_cookie(config.JWT_ACCESS_COOKIE_NAME, token)
     return {"access_token": token}
-
-@router.get("/users", dependencies=[Depends(security.access_token_required)])
-async def get_users(session: SessionDep):
-    return await AuthRepository.get_all_users(session)
-
-@router.get("/users/{user_id}", dependencies=[Depends(security.access_token_required)])
-async def get_users_id(user_id: int, session: SessionDep):
-    return await AuthRepository.get_user(session, user_id=user_id)

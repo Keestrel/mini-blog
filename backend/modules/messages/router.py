@@ -19,12 +19,13 @@ async def websocket_chat(websocket: WebSocket, chat_id: int, session: SessionDep
     if not (await session.execute(check)).scalar_one_or_none():
         return await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
 
-    await manager.connect(websocket, chat_id)
+    await manager.connect(websocket, chat_id, user_id)
     try:
         while True:
             data = await websocket.receive_json()
             if content := data.get("content", "").strip():
                 response_data = await MessageRepository.save_message(session, chat_id, user_id, content)
+                response_data["type"] = "new_message"
                 await manager.broadcast(response_data, chat_id)
     except WebSocketDisconnect:
-        manager.disconnect(websocket, chat_id)
+        await manager.disconnect(websocket, chat_id, user_id)

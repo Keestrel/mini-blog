@@ -19,9 +19,7 @@ async def get_chats(session: SessionDep, payload: TokenPayload = Depends(securit
 
 @router.get("/{chat_id}", response_model=ChatDetailSchema)
 async def get_detail(chat_id: int, session: SessionDep, payload: TokenPayload = Depends(security.access_token_required)):
-    if not await ChatRepository.is_member(session, chat_id, int(payload.sub)):
-        raise HTTPException(403, "Нет доступа")
-    return await ChatRepository.get_chat_detail(session, chat_id)
+    return await ChatService.get_detail(session, chat_id, int(payload.sub))
 
 @router.get("/{chat_id}/messages", response_model=list[MessageResponseSchema])
 async def get_messages(chat_id: int, session: SessionDep, limit: int = 50, offset: int = 0, payload: TokenPayload = Depends(security.access_token_required)):

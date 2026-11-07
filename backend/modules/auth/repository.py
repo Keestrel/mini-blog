@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from core.database import SessionDep
 from models.user import UserModel
+from datetime import datetime
 
 class AuthRepository:
     @staticmethod
@@ -20,3 +21,11 @@ class AuthRepository:
         session.add(user)
         await session.commit()
         return user
+
+    @staticmethod
+    async def update_last_seen(session: SessionDep, user_id: int, time: datetime):
+        user = await session.get(UserModel, user_id)
+        
+        if user:
+            user.last_seen = time
+            await session.commit()

@@ -1,8 +1,10 @@
 from typing import TYPE_CHECKING
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from datetime import datetime
 
 if TYPE_CHECKING:
     from schemas.post_schema import PostShortSchema
+
 
 
 class UserAddSchema(BaseModel):
@@ -14,6 +16,10 @@ class UserAddSchema(BaseModel):
 class UserShortSchema(BaseModel):
     id: int
     username: str
+    email: str
+    
+    last_seen: datetime | None = None
+    is_online: bool = False
 
     model_config = ConfigDict(from_attributes=True)
 
